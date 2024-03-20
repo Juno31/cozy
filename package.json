@@ -42,6 +42,5 @@
     "env": {
       "browser": true
     }
-  },
-  "type": "module"
+  }
 }
