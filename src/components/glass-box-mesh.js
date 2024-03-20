@@ -1,16 +1,16 @@
-import { forwardRef, useImperativeHandle } from 'react';
+import { forwardRef, useImperativeHandle, useRef } from 'react';
 import { useLoader } from '@react-three/fiber';
 import { TextureLoader } from 'three';
 
 const BoxMesh = forwardRef(({ ...props }, ref) => {
+  const activeRef = useRef(true);
   const colorMap = useLoader(TextureLoader, 'assets/textures/colors.png');
   useImperativeHandle(ref, () => {
     return {
       mesh: ref.current,
+      active: activeRef.current,
     };
   });
-
-  console.log(props);
 
   return (
     <mesh

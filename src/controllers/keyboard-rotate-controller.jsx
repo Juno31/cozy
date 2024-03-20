@@ -10,12 +10,13 @@ const KeyboardRotateController = ({
 }) => {
   const ref = useRef();
   const [subscribeKeys, getKeys] = useKeyboardControls();
-  console.log(ref.current);
+
   useFrame((state, delta) => {
     const { moveForward, moveBackward, moveLeft, moveRight, jump } = getKeys();
     const mesh = ref.current.mesh;
+    const active = ref.current.active;
 
-    if (mesh) {
+    if (mesh && active) {
       let x = mesh.rotation.x;
       let y = mesh.rotation.y;
 
