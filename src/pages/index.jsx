@@ -4,11 +4,32 @@ import KeyboardRotateMeshController from '@/controllers/keyboard-rotate-mesh-con
 import GlassBoxMesh from '@/components/glass-box-mesh';
 import CustomText from '@/components/custom-text';
 import ControllablePerspectiveCamera from '@/controllers/controllable-perspective-camera';
-import { useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import CordinateLines from '@/components/cordinate-lines';
+import useOverlay from '@/module/overlay/use-overlay';
+import LoadingOverlay from '@/components/overlay/loading-overlay';
 
 const Home = () => {
   const canvasRef = useRef();
+  const [isCreated, setIsCreated] = useState(false);
+  const { open, close, exit } = useOverlay();
+
+  const handleCreated = useCallback(() => {
+    setTimeout(() => {
+      exit();
+      setIsCreated(true);
+    }, 2500);
+  }, []);
+
+  useEffect(() => {
+    open(({ ...props }) => {
+      return <LoadingOverlay {...props} />;
+    });
+
+    return () => {
+      exit();
+    };
+  }, []);
 
   return (
     <div className="h-screen w-full">
@@ -26,6 +47,7 @@ const Home = () => {
         ]}
       >
         <Canvas
+          className={`${isCreated ? 'transform-gpu opacity-100 duration-500' : 'opacity-0 duration-500'}`}
           events={(state) => {
             return {
               ...events(state),
@@ -35,8 +57,13 @@ const Home = () => {
           camera={{
             position: [1, 0, 10],
           }}
+          onCreated={handleCreated}
         >
-          <ControllablePerspectiveCamera keyboardFlag mouseFlag position={[0, 0, 0]}>
+          <ControllablePerspectiveCamera
+            keyboardFlag
+            mouseFlag
+            position={[0, 0, 0]}
+          >
             <directionalLight
               color="white"
               position={[10, 10, 10]}
@@ -70,9 +97,13 @@ const Home = () => {
             </CustomText>
             <KeyboardRotateMeshController
               mesh={{ position: [2, 2, -2] }}
-              element={({meshRef, ...props}) => {
-
-                return <GlassBoxMesh ref={meshRef} {...props} />
+              element={({ meshRef, ...props }) => {
+                return (
+                  <GlassBoxMesh
+                    ref={meshRef}
+                    {...props}
+                  />
+                );
               }}
             />
             <CordinateLines />
