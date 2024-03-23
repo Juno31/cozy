@@ -36,13 +36,13 @@ const Home = () => {
       <KeyboardControls
         map={[
           { keys: ['ArrowUp'], name: 'moveForward' },
-          { keys: ['w'], name: 'rotateForward' },
+          { keys: ['w', 'ㅈ'], name: 'rotateForward' },
           { keys: ['ArrowDown'], name: 'moveBackward' },
-          { keys: ['s'], name: 'rotateBackward' },
+          { keys: ['s', 'ㄴ'], name: 'rotateBackward' },
           { keys: ['ArrowLeft'], name: 'moveLeft' },
-          { keys: ['a'], name: 'rotateLeft' },
+          { keys: ['a', 'ㅁ'], name: 'rotateLeft' },
           { keys: ['ArrowRight'], name: 'moveRight' },
-          { keys: ['d'], name: 'rotateRight' },
+          { keys: ['d', 'ㅇ'], name: 'rotateRight' },
           { keys: ['Space'], name: 'jump' },
         ]}
       >
