@@ -2,7 +2,7 @@ import { useKeyboardControls } from '@react-three/drei';
 import { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 
-const KeyboardRotateController = ({
+const KeyboardRotateMeshController = ({
   element: Element,
   mesh,
   geometry,
@@ -42,13 +42,8 @@ const KeyboardRotateController = ({
   });
 
   return (
-    <Element
-      ref={ref}
-      mesh={mesh}
-      geometry={geometry}
-      material={material}
-    />
+    <Element meshRef={ref} />
   );
 };
 
-export default KeyboardRotateController;
+export default KeyboardRotateMeshController;
