@@ -2,61 +2,62 @@ import { PerspectiveCamera, useKeyboardControls } from '@react-three/drei';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 
-const ControllablePerspectiveCamera = ({ children, keyboardFlag = false, mouseFlag = false }) => {
+const ControllablePerspectiveCamera = ({
+  children,
+  keyboardFlag = false,
+  mouseFlag = false,
+}) => {
   const cameraRef = useRef();
   const [subscribeKeys, getKeys] = useKeyboardControls();
   const { width, height } = useThree((state) => state.viewport);
   const initial = useRef();
 
-  const pressedCoordinate = useRef()
-  const pressedRef = useRef(false)
+  const pressedCoordinate = useRef();
+  const pressedRef = useRef(false);
 
   const handleUp = useCallback(() => {
-
-    setPressed(false)
-  }, [])
+    setPressed(false);
+  }, []);
 
   const handleDown = useCallback(() => {
-
-    setPressed(true)
-  }, [])
+    setPressed(true);
+  }, []);
 
   const handleKeyboardFeature = useCallback(() => {
     const camera = cameraRef.current;
 
-    if(!camera) return
+    if (!camera) return;
 
-    const { rotateForward, rotateBackward, rotateLeft, rotateRight } = getKeys();
+    const { rotateForward, rotateBackward, rotateLeft, rotateRight } =
+      getKeys();
 
     let rotateX = camera.rotation.x;
     let rotateY = camera.rotation.y;
 
     if (rotateForward) {
-      rotateX = rotateX + 0.1;
+      rotateX = rotateX + 0.025;
     }
 
     if (rotateBackward) {
-      rotateX = rotateX - 0.1;
+      rotateX = rotateX - 0.025;
     }
 
     if (rotateLeft) {
-      rotateY = rotateY + 0.1;
+      rotateY = rotateY + 0.025;
     }
 
     if (rotateRight) {
-      rotateY = rotateY - 0.1;
+      rotateY = rotateY - 0.025;
     }
 
     camera.rotation.x = rotateX;
     camera.rotation.y = rotateY;
-  }, [])
+  }, []);
 
-  const handleMouseFeature = useCallback(() => {
-
-  }, [width])
+  const handleMouseFeature = useCallback(() => {}, [width]);
 
   const handleResponsiveFeature = useCallback(() => {
-    const camera = cameraRef.current
+    const camera = cameraRef.current;
 
     if (!initial.current) {
       initial.current = {
@@ -68,65 +69,64 @@ const ControllablePerspectiveCamera = ({ children, keyboardFlag = false, mouseFl
     if (initial.current.width !== width) {
       camera.position.z = width / initial.current.width;
     }
-  }, [width])
+  }, [width]);
 
   useFrame(() => {
-    if(keyboardFlag){
-      handleKeyboardFeature()
+    if (keyboardFlag) {
+      handleKeyboardFeature();
     }
 
-    if(mouseFlag){
-      handleMouseFeature()
+    if (mouseFlag) {
+      handleMouseFeature();
     }
 
-    handleResponsiveFeature()
+    handleResponsiveFeature();
   });
 
   useEffect(() => {
     const handleMouseDown = (e) => {
       //activate handlers
-      pressedRef.current = true
+      pressedRef.current = true;
 
       //save initial coordinate
       pressedCoordinate.current = {
         x: e.pageX,
-        y: e.pageY
-      }
-    }
+        y: e.pageY,
+      };
+    };
     const handleMouseMove = (e) => {
-      if(!pressedRef.current) return
+      if (!pressedRef.current) return;
 
       //get gap of saved coordinate and current coordinate
-      const xGap = pressedCoordinate.current.x - e.pageX
-      const yGap = pressedCoordinate.current.y - e.pageY
+      const xGap = pressedCoordinate.current.x - e.pageX;
+      const yGap = pressedCoordinate.current.y - e.pageY;
 
       //apply to rotation
-      cameraRef.current.rotation.x = cameraRef.current.rotation.x + yGap/100
-      cameraRef.current.rotation.y = cameraRef.current.rotation.y + xGap/100
+      cameraRef.current.rotation.x = cameraRef.current.rotation.x + yGap / 100;
+      cameraRef.current.rotation.y = cameraRef.current.rotation.y + xGap / 100;
 
       //save new coordinate
       pressedCoordinate.current = {
         x: e.pageX,
-        y: e.pageY
-      }
-    }
+        y: e.pageY,
+      };
+    };
     const handleMouseUp = () => {
       //deactivate handlers
-      pressedRef.current = false
+      pressedRef.current = false;
 
       //reset coordinate
+    };
 
-    }
-
-    window.addEventListener('mouseup', handleMouseUp)
-    window.addEventListener('mousemove', handleMouseMove)
-    window.addEventListener('mousedown', handleMouseDown)
+    window.addEventListener('mouseup', handleMouseUp);
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mousedown', handleMouseDown);
 
     return () => {
-      window.removeEventListener('mouseup', handleMouseUp)
-      window.removeEventListener('mousemove', handleMouseMove)
-      window.removeEventListener('mousedown', handleMouseDown)
-    }
+      window.removeEventListener('mouseup', handleMouseUp);
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mousedown', handleMouseDown);
+    };
   }, []);
 
   return (
