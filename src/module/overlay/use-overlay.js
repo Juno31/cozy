@@ -1,13 +1,11 @@
 import { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import OverlayController from '@/module/overlay/overlay-controller';
-import OverlayContext from '@/module/overlay/overlay-provider';
+import { OverlayContext } from '@/module/overlay/overlay-context';
 
 let elementId = 1;
 
 const useOverlay = ({ exitOnUnmount = true } = {}) => {
-  const context = useContext(OverlayContext);
-
-  const { mount, unmount } = context;
+  const { mount, unmount } = useContext(OverlayContext);
   const [id] = useState(() => String(elementId++));
 
   const overlayRef = useRef(null);
