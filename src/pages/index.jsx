@@ -8,6 +8,8 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import CordinateLines from '@/components/cordinate-lines';
 import useOverlay from '@/module/overlay/use-overlay';
 import LoadingOverlay from '@/components/overlay/loading-overlay';
+import FocusMeshController from '@/controllers/focus-mesh-controller';
+import FocusProvider from '@/module/focus/focus-provider';
 
 const Home = () => {
   const canvasRef = useRef();
@@ -59,55 +61,90 @@ const Home = () => {
           }}
           onCreated={handleCreated}
         >
-          <ControllablePerspectiveCamera
-            keyboardFlag
-            mouseFlag
-            position={[0, 0, 0]}
-          >
-            <directionalLight
-              color="white"
-              position={[10, 10, 10]}
-            />
-            <CustomText
-              position={[0, 5, -5]}
-              bold
+          <FocusProvider>
+            <ControllablePerspectiveCamera
+              keyboardFlag
+              mouseFlag
+              position={[0, 0, 0]}
             >
-              JUNO UM ARCHIVE
-            </CustomText>
-            <CustomText
-              position={[0, 4, -5]}
-              bold
-              scale={0.5}
-            >
-              1. ROTATE CAMERA WITH W,A,S,D
-            </CustomText>
-            <CustomText
-              position={[0, 3.2, -5]}
-              bold
-              scale={0.5}
-            >
-              2. ROTATE CAMERA BY GRAB AND MOVE
-            </CustomText>
-            <CustomText
-              position={[0, 2.4, -5]}
-              bold
-              scale={0.5}
-            >
-              3. ROTATE BOX WITH ARROW KEYS (when mouse hovered)
-            </CustomText>
-            <KeyboardRotateMeshController
-              mesh={{ position: [2, 2, -2] }}
-              element={({ meshRef, ...props }) => {
-                return (
-                  <GlassBoxMesh
-                    ref={meshRef}
-                    {...props}
-                  />
-                );
-              }}
-            />
-            <CordinateLines />
-          </ControllablePerspectiveCamera>
+              <directionalLight
+                color="white"
+                position={[10, 10, 10]}
+              />
+              <CustomText
+                position={[0, 5, -5]}
+                bold
+              >
+                JUNO UM ARCHIVE
+              </CustomText>
+              <CustomText
+                position={[0, 4, -5]}
+                bold
+                scale={0.5}
+              >
+                1. ROTATE CAMERA WITH W,A,S,D
+              </CustomText>
+              <CustomText
+                position={[0, 3.2, -5]}
+                bold
+                scale={0.5}
+              >
+                2. ROTATE CAMERA BY GRAB AND MOVE
+              </CustomText>
+              <CustomText
+                position={[0, 2.4, -5]}
+                bold
+                scale={0.5}
+              >
+                3. ROTATE BOX WITH ARROW KEYS (when mouse hovered)
+              </CustomText>
+              <KeyboardRotateMeshController
+                mesh={{ position: [2, 2, -2] }}
+                element={({ meshRef, ...props }) => {
+                  return (
+                    <GlassBoxMesh
+                      ref={meshRef}
+                      {...props}
+                    />
+                  );
+                }}
+              />
+              <FocusMeshController
+                mesh={{ position: [2, 2, -2] }}
+                element={({ meshRef, ...props }) => {
+                  return (
+                    <GlassBoxMesh
+                      ref={meshRef}
+                      {...props}
+                    />
+                  );
+                }}
+              />
+              <FocusMeshController
+                mesh={{ position: [-2, -2, 2] }}
+                element={({ meshRef, ...props }) => {
+                  return (
+                    <GlassBoxMesh
+                      ref={meshRef}
+                      {...props}
+                    />
+                  );
+                }}
+              />
+              <FocusMeshController
+                mesh={{ position: [1, 1, -1] }}
+                element={({ meshRef, ...props }) => {
+                  return (
+                    <GlassBoxMesh
+                      ref={meshRef}
+                      {...props}
+                    />
+                  );
+                }}
+              />
+              <CordinateLines />
+            </ControllablePerspectiveCamera>
+          </FocusProvider>
         </Canvas>
       </KeyboardControls>
     </div>
