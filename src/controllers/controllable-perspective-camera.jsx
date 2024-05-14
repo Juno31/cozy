@@ -1,6 +1,7 @@
 import { PerspectiveCamera, useKeyboardControls } from '@react-three/drei';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
+import { INITIAL } from '@/constants/camera';
 
 const ControllablePerspectiveCamera = ({
   children,
@@ -132,8 +133,7 @@ const ControllablePerspectiveCamera = ({
   return (
     <PerspectiveCamera
       ref={cameraRef}
-      rotation={[0.15, 0.5, 0]}
-      position={[0, 0, 0]}
+      {...INITIAL.camera}
     >
       {children}
     </PerspectiveCamera>
