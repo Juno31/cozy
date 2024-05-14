@@ -8,3 +8,22 @@ html, body, #__next {
 
     position: relative;
 }
+
+@keyframes reveal {
+    from {
+        transform: translateY(200px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0px);
+        opacity: 1;
+    }
+}
+
+.reveal {
+    animation: reveal linear;
+    animation-delay: 10s;
+    animation-timeline: view();
+    animation-range: entry 0% entry 100%;
+}
+
